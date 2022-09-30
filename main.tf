@@ -26,8 +26,8 @@ resource "aws_instance" "devsec" {
 }
 
 
-resource "aws_security_group" "allow_tls1" {
-  name        = "allow_tls"
+resource "aws_security_group" "allow_tls12 {
+  name        = "allow_tls1"
   description = "Allow TLS inbound traffic"
   vpc_id      = data.aws_vpc.main.id
 
