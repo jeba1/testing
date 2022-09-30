@@ -55,4 +55,4 @@ jobs:
       run: sleep 60s
       shell: bash  
     - name: terraform destroy
-      run: terraform destroy
+      run: terraform destroy -auto-approve -input=false
