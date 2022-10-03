@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "avai" {}
-data "aws_vpc" "main" {}
+data "aws_vpcs" "main" {}
 data "aws_ami" "ubuntu" {
   
   most_recent      = true
@@ -29,7 +29,7 @@ resource "aws_instance" "devsec" {
 resource "aws_security_group" "allow_tls12" {
   name        = "allow_tls1"
   description = "Allow TLS inbound traffic"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = data.aws_vpcs.main[0].id
 
   dynamic "ingress" {
         for_each = ["22", "8080", "80"]   
@@ -38,7 +38,7 @@ resource "aws_security_group" "allow_tls12" {
             from_port        = ingress.value
             to_port          = ingress.value
             protocol         = "tcp"
-            cidr_blocks      = [data.aws_vpc.main.cidr_block]
+            cidr_blocks      = [data.aws_vpc.main[0].cidr_block]
         }
    }
 
@@ -55,7 +55,7 @@ resource "aws_security_group" "allow_tls12" {
     }
 }
 output "vpid" {
-    value = data.aws_vpc.main.id
+    value = data.aws_vpc.main[0].id
 }
 output "public" {
     value = aws_instance.devsec.public_ip
